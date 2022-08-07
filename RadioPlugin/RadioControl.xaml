@@ -6,6 +6,13 @@
              xmlns:local="clr-namespace:RadioPlugin"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Ascon.AU.PluginConnector;component/AUStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -16,9 +23,39 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="url_txtbx" Text="{Binding URL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBox 
+            Grid.Row="0" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="2" 
+            x:Name="url_txtbx" 
+            Text="{Binding URL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            Style="{StaticResource TextBoxAUStyle}"/>
         <Slider Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="vlm_sldr" Minimum="0" Maximum="100" Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <Button x:Name="strt_btn" Grid.Row="2" Grid.Column="0" Content="Старт" Click="strt_btn_Click"/>
-        <Button x:Name="stp_btn" Grid.Row="2" Grid.Column="1" Content="Стоп" Click="stp_btn_Click"/>
+        <Button 
+            Grid.Row="2"
+            Grid.Column="0" 
+            x:Name="strt_btn" 
+            HorizontalAlignment="Left" 
+            Margin="0,5,5,5"
+            Style="{DynamicResource FunctionalButtonStyle}"
+            IsEnabled="{Binding Path=Enabled, UpdateSourceTrigger=PropertyChanged}"
+            Click="strt_btn_Click">
+            <TextBlock 
+                Text="Старт" 
+                Style="{StaticResource TextBlockFunctionalButton}"/>
+        </Button>
+        <Button 
+            Grid.Row="2"
+            Grid.Column="1" 
+            x:Name="stp_btn" 
+            HorizontalAlignment="Left" 
+            Margin="0,5,5,5"
+            Style="{DynamicResource FunctionalButtonStyle}"
+            IsEnabled="{Binding Path=Enabled, UpdateSourceTrigger=PropertyChanged}"
+            Click="stp_btn_Click">
+            <TextBlock 
+                Text="Стоп" 
+                Style="{StaticResource TextBlockFunctionalButton}"/>
+        </Button>
     </Grid>
 </UserControl>
