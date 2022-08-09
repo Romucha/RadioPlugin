@@ -29,7 +29,8 @@
             Grid.ColumnSpan="2" 
             x:Name="url_txtbx" 
             Text="{Binding URL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            Style="{StaticResource TextBoxAUStyle}"/>
+            Style="{StaticResource TextBoxAUStyle}"
+            Width="200"/>
         <Slider Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="vlm_sldr" Minimum="0" Maximum="100" Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Button 
             Grid.Row="2"
