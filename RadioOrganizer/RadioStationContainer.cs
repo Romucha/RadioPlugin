@@ -30,33 +30,10 @@ namespace RadioOrganizer
             }
         }
 
-        private ImageSource logo;
-        public ImageSource Logo
-        {
-            get => logo;
-            set
-            {
-                logo = value;
-            }
-        }
-
-        public RadioStationContainer(string Name, string Url, string LogoPath)
+        public RadioStationContainer(string Name, string Url)
         {
             this.Name = Name;
             this.Url = Url;
-            SetLogo(LogoPath);
-        }
-
-        public void SetLogo(string LogoPath)
-        {
-            try
-            {
-                Logo = new BitmapImage(new Uri(LogoPath));
-            }
-            catch
-            {
-                Logo = new BitmapImage(new Uri("Logos\\_default.png"));
-            }
         }
     }
 }
