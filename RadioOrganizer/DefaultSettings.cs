@@ -17,10 +17,12 @@ namespace RadioOrganizer
             {
                 if (defaultradioStations == null)
                 {
-                    defaultradioStations = new Dictionary<string, string>();
+                    defaultradioStations = new Dictionary<string, string>()
                     {
-
-                    }
+                        { "Серебряный дождь", "http://213.59.4.27:8000/silver128.mp3"},
+                        { "Радио Русский Рок", "https://3.stream.radiosignal.one/top100-mp3"},
+                        { "Кыргызстан Обондору", "http://31.192.250.52:8000/obondoru128"},
+                    };
                 }
                 return defaultradioStations;
             }

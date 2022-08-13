@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RadioPlugin"
+             xmlns:rad_org="clr-namespace:RadioOrganizer;assembly=RadioOrganizer"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -17,20 +18,36 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBox 
-            Grid.Row="0" 
-            Grid.Column="0" 
-            Grid.ColumnSpan="2" 
-            x:Name="url_txtbx" 
-            Text="{Binding URL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            Style="{StaticResource TextBoxAUStyle}"
-            Width="200"/>
+        <ListView
+            x:Name="lst_rd_stsns"
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            ItemsSource="{Binding RadioContainer.RadioStations, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type rad_org:RadioStationContainer}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <Slider Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="vlm_sldr" Minimum="0" Maximum="100" Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Button 
             Grid.Row="2"
@@ -39,7 +56,6 @@
             HorizontalAlignment="Left" 
             Margin="0,5,5,5"
             Style="{DynamicResource FunctionalButtonStyle}"
-            IsEnabled="{Binding Path=Enabled, UpdateSourceTrigger=PropertyChanged}"
             Click="strt_btn_Click">
             <TextBlock 
                 Text="Старт" 
@@ -52,10 +68,21 @@
             HorizontalAlignment="Left" 
             Margin="0,5,5,5"
             Style="{DynamicResource FunctionalButtonStyle}"
-            IsEnabled="{Binding Path=Enabled, UpdateSourceTrigger=PropertyChanged}"
             Click="stp_btn_Click">
             <TextBlock 
                 Text="Стоп" 
+                Style="{StaticResource TextBlockFunctionalButton}"/>
+        </Button>
+        <Button 
+            Grid.Row="2"
+            Grid.Column="2" 
+            x:Name="ps_btn" 
+            HorizontalAlignment="Left" 
+            Margin="0,5,5,5"
+            Style="{DynamicResource FunctionalButtonStyle}"
+            Click="stp_btn_Click">
+            <TextBlock 
+                Text="Пауза" 
                 Style="{StaticResource TextBlockFunctionalButton}"/>
         </Button>
     </Grid>

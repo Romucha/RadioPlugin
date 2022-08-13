@@ -1,4 +1,5 @@
 ﻿using Ascon.AU.PluginConnector;
+using RadioOrganizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,12 +82,17 @@ namespace RadioPlugin
 
         private void strt_btn_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Start();
+            ViewModel.RadioContainer.Play(lst_rd_stsns.SelectedItem as RadioStationContainer);
         }
 
         private void stp_btn_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Stop();
+            ViewModel.RadioContainer.Stop();
+        }
+
+        private void ps_btn_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.RadioContainer.Pause();
         }
     }
 }

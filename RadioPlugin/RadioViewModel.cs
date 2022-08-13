@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RadioOrganizer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using WMPLib;
 
 namespace RadioPlugin
 {
@@ -17,61 +17,34 @@ namespace RadioPlugin
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
+        }        
 
-        private WindowsMediaPlayer wmp;
-        public WindowsMediaPlayer WMP
+        private RadioContainer radioContainer;
+
+        public RadioContainer RadioContainer
         {
-            get => wmp;
+            get => radioContainer;
             set
             {
-                wmp = value;
-                OnPropertyChanged(nameof(WMP));
+                radioContainer = value;
+                OnPropertyChanged(nameof(RadioContainer));
             }
         }
 
-        private int volume = 100;
         public int Volume
         {
-            get => volume;
+            get => RadioContainer.Volume;
             set
             {
-                volume = value;
+                if (RadioContainer != null)
+                    RadioContainer.Volume = value;
                 OnPropertyChanged(nameof(Volume));
-            }
-        }
-
-        private string url = "http://213.59.4.27:8000/silver128.mp3";
-        public string URL
-        {
-            get => url;
-            set
-            {
-                url = value;
-                OnPropertyChanged(nameof(URL));
             }
         }
 
         public RadioViewModel()
         {
-            WMP = new WindowsMediaPlayer();
-        }
-
-        public void Start()
-        {
-            WMP.URL = URL;
-            WMP.settings.volume = Volume;
-            //WMP.controls.play();
-            Task play = new Task(WMP.controls.play);
-            play.Start();
-        }
-
-        public void Stop()
-        {
-            if (wmp.playState == WMPPlayState.wmppsPlaying)
-            {
-                WMP.controls.stop();
-            }
+            RadioContainer = new RadioContainer();
         }
     }
 }

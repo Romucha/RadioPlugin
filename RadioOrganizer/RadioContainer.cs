@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using WMPLib;
 
 namespace RadioOrganizer
 {
@@ -21,6 +23,16 @@ namespace RadioOrganizer
                     Directory.CreateDirectory(dirPath);
                 }
                 return Path.Combine(dirPath, "RadioStations.json");
+            }
+        }
+
+        private WindowsMediaPlayer wmp;
+        public WindowsMediaPlayer WMP
+        {
+            get => wmp;
+            set
+            {
+                wmp = value;                
             }
         }
 
@@ -41,7 +53,10 @@ namespace RadioOrganizer
             set
             {
                 if (value > 0 && value <= 100)
-                volume = value;
+                {
+                    WMP.settings.volume = value;
+                    volume = value;
+                }
             }
         }
 
@@ -56,13 +71,14 @@ namespace RadioOrganizer
             {
                 StationsFromJson();
             }
+            WMP = new WindowsMediaPlayer();
         }
 
         public void StationsFromJson()
         {
             try
             {
-                RadioStations = JsonConvert.DeserializeObject<ObservableCollection<RadioStationContainer>>(StationsPath);
+                RadioStations = JsonConvert.DeserializeObject<ObservableCollection<RadioStationContainer>>(File.ReadAllText(StationsPath));
             }
             catch (Exception ex)
             {
@@ -80,6 +96,40 @@ namespace RadioOrganizer
             {
 
             }
+        }
+
+        public void Play(RadioStationContainer RSC)
+        {
+            if (RSC != null)
+            {
+                if (WMP.playState != WMPPlayState.wmppsPlaying)
+                {
+                    WMP.URL = RSC.Url;
+                    WMP.settings.volume = Volume;
+                    Task play = new Task(WMP.controls.play);
+                    play.Start();
+                }
+            }
+        }
+
+        public void Pause()
+        {
+            if (WMP.playState != WMPPlayState.wmppsPaused)
+            {
+                Task pause = new Task(WMP.controls.pause);
+                pause.Start();
+            }
+        }
+
+        public void Stop()
+        {
+            if (WMP.playState == WMPPlayState.wmppsPlaying
+                || WMP.playState == WMPPlayState.wmppsPaused)
+            {
+                Task stop = new Task(WMP.controls.stop);
+                stop.Start();
+            }
+
         }
     }
 }
