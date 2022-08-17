@@ -25,7 +25,7 @@ namespace RadioPlugin
         public string DisplayName { get; set; } = "Радио";
         public string Description { get; set; } = "Радио";
         public string PluginID { get; set; } = "RadioPlugin";
-        public int DisplayIconCode { get; set; } = 0xe009;
+        public int DisplayIconCode { get; set; } = 0xe022;
         public string HelpLink { get; set; } = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         public string UpdateCommandDescription { get; set; }
         public string ExpressPanelCommandDescription { get; set; }
@@ -80,19 +80,10 @@ namespace RadioPlugin
             InitializeComponent();
         }
 
-        private void strt_btn_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.RadioContainer.Play(lst_rd_stsns.SelectedItem as RadioStationContainer);
-        }
-
-        private void stp_btn_Click(object sender, RoutedEventArgs e)
+        private void lst_rd_stsns_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.RadioContainer.Stop();
-        }
-
-        private void ps_btn_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.RadioContainer.Pause();
+            ViewModel.RadioContainer.Play(lst_rd_stsns.SelectedItem as RadioStationContainer);
         }
     }
 }

@@ -21,7 +21,8 @@ namespace RadioOrganizer
                     {
                         { "Серебряный дождь", "http://213.59.4.27:8000/silver128.mp3"},
                         { "Радио Русский Рок", "https://3.stream.radiosignal.one/top100-mp3"},
-                        { "Кыргызстан Обондору", "http://31.192.250.52:8000/obondoru128"},
+                        //{ "Кыргызстан Обондору", "http://31.192.250.52:8000/obondoru128"},
+                        { "Радио Книга", "http://bookradio.hostingradio.ru:8069/fm"},
                     };
                 }
                 return defaultradioStations;

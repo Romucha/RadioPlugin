@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:RadioPlugin"
              xmlns:rad_org="clr-namespace:RadioOrganizer;assembly=RadioOrganizer"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Margin="0,5,15,15">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,11 +14,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -30,60 +30,100 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="3"
-            ItemsSource="{Binding RadioContainer.RadioStations, UpdateSourceTrigger=PropertyChanged}">
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type rad_org:RadioStationContainer}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"/>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+            VirtualizingPanel.IsVirtualizing="True"
+            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+            VirtualizingPanel.VirtualizationMode="Recycling"
+            ScrollViewer.IsDeferredScrollingEnabled="True"
+            ItemsSource="{Binding RadioContainer.RadioStations, UpdateSourceTrigger=PropertyChanged}"
+            SelectionChanged="lst_rd_stsns_SelectionChanged">
+            <ListView.Resources>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+                <Style TargetType="{x:Type ListView}">
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Style>
+            </ListView.Resources>
+            <ListView.Background>
+                <ImageBrush/>
+            </ListView.Background>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0,5,0,5"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="BorderBrush" Value="LightGray"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                    <Setter Property="Background" Value="{StaticResource PanelBackgroundColor}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <Border Padding="{TemplateBinding Padding}"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="0"
+                                        SnapsToDevicePixels="true">
+                                    <GridViewRowPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource ItemMouseOverBackgroundColor}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="Transparent"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource TextBoxBorderBrushColor}"/>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate DataType="{x:Type rad_org:RadioStationContainer}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBlockSubHeader}"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBlockSecondary}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
         </ListView>
-        <Slider Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="vlm_sldr" Minimum="0" Maximum="100" Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <Button 
-            Grid.Row="2"
+        <Slider 
+            Grid.Row="1" 
             Grid.Column="0" 
-            x:Name="strt_btn" 
-            HorizontalAlignment="Left" 
-            Margin="0,5,5,5"
-            Style="{DynamicResource FunctionalButtonStyle}"
-            Click="strt_btn_Click">
-            <TextBlock 
-                Text="Старт" 
-                Style="{StaticResource TextBlockFunctionalButton}"/>
-        </Button>
-        <Button 
-            Grid.Row="2"
-            Grid.Column="1" 
-            x:Name="stp_btn" 
-            HorizontalAlignment="Left" 
-            Margin="0,5,5,5"
-            Style="{DynamicResource FunctionalButtonStyle}"
-            Click="stp_btn_Click">
-            <TextBlock 
-                Text="Стоп" 
-                Style="{StaticResource TextBlockFunctionalButton}"/>
-        </Button>
-        <Button 
-            Grid.Row="2"
-            Grid.Column="2" 
-            x:Name="ps_btn" 
-            HorizontalAlignment="Left" 
-            Margin="0,5,5,5"
-            Style="{DynamicResource FunctionalButtonStyle}"
-            Click="stp_btn_Click">
-            <TextBlock 
-                Text="Пауза" 
-                Style="{StaticResource TextBlockFunctionalButton}"/>
-        </Button>
+            Grid.ColumnSpan="3" 
+            x:Name="vlm_sldr" 
+            Minimum="0" 
+            Maximum="100" 
+            Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>        
     </Grid>
 </UserControl>
