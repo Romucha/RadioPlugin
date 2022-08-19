@@ -106,27 +106,30 @@ namespace RadioOrganizer
                 {
                     WMP.URL = RSC.Url;
                     WMP.settings.volume = Volume;
+                    RSC.IsPlaying = true;
                     Task play = new Task(WMP.controls.play);
                     play.Start();
                 }
             }
         }
 
-        public void Pause()
+        public void Pause(RadioStationContainer RSC)
         {
             if (WMP.playState != WMPPlayState.wmppsPaused)
             {
                 Task pause = new Task(WMP.controls.pause);
+                RSC.IsPlaying = false;
                 pause.Start();
             }
         }
 
-        public void Stop()
+        public void Stop(RadioStationContainer RSC)
         {
             if (WMP.playState == WMPPlayState.wmppsPlaying
                 || WMP.playState == WMPPlayState.wmppsPaused)
             {
                 Task stop = new Task(WMP.controls.stop);
+                RSC.IsPlaying = false;
                 stop.Start();
             }
 

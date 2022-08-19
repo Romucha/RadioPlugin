@@ -34,8 +34,7 @@
             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
             VirtualizingPanel.VirtualizationMode="Recycling"
             ScrollViewer.IsDeferredScrollingEnabled="True"
-            ItemsSource="{Binding RadioContainer.RadioStations, UpdateSourceTrigger=PropertyChanged}"
-            SelectionChanged="lst_rd_stsns_SelectionChanged">
+            ItemsSource="{Binding RadioContainer.RadioStations, UpdateSourceTrigger=PropertyChanged}">
             <ListView.Resources>
                 <Style TargetType="{x:Type GridViewColumnHeader}">
                     <Setter Property="Visibility" Value="Collapsed" />
@@ -70,7 +69,7 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <Style.Triggers>
+                    <!--<Style.Triggers>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
@@ -91,7 +90,7 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" Value="{StaticResource TextBoxBorderBrushColor}"/>
                         </MultiTrigger>
-                    </Style.Triggers>
+                    </Style.Triggers>-->
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
@@ -108,6 +107,9 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
+                                    <Button x:Name="ply_btn" Grid.Row="0" Click="ply_btn_Click" Style="{StaticResource TitleBarButtonStyle}">
+                                        ⏯
+                                    </Button>
                                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBlockSubHeader}"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBlockSecondary}"/>
                                 </Grid>
@@ -121,9 +123,8 @@
             Grid.Row="1" 
             Grid.Column="0" 
             Grid.ColumnSpan="3" 
-            x:Name="vlm_sldr" 
-            Minimum="0" 
-            Maximum="100" 
+            Minimum="0"
+            Maximum="100"
             Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>        
     </Grid>
 </UserControl>

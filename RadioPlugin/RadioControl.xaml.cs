@@ -80,10 +80,42 @@ namespace RadioPlugin
             InitializeComponent();
         }
 
-        private void lst_rd_stsns_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ply_btn_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.RadioContainer.Stop();
-            ViewModel.RadioContainer.Play(lst_rd_stsns.SelectedItem as RadioStationContainer);
+            /*
+             * possible scenarios:
+             * 1. user presses button for the very fisrt time
+             * it means that current radio station == null
+             * then we set current radio station to current data context
+             * and play it
+             * 2. user presses button after pressing another one
+             * it means that current radio station != null
+             * then we stop current radio station and set it to current data context
+             * and play it
+             * 3. user presses the same button again
+             * it means user is trying to pause player and current radio station and current data context refer to the same object
+             * then we stop it
+             * 
+             */
+            var bufRadioStation = ((FrameworkElement)sender).DataContext as RadioStationContainer;
+            if (ViewModel.CurrentRadioStation == null)
+            {
+                ViewModel.CurrentRadioStation = bufRadioStation;
+                ViewModel.RadioContainer.Play(ViewModel.CurrentRadioStation);
+            }
+            else if (ViewModel.CurrentRadioStation != null)
+            {
+                if (object.ReferenceEquals(bufRadioStation, ViewModel.CurrentRadioStation))
+                {
+                    ViewModel.RadioContainer.Pause(bufRadioStation);
+                }
+                else
+                {
+                    ViewModel.RadioContainer.Stop(ViewModel.CurrentRadioStation);
+                    ViewModel.CurrentRadioStation = bufRadioStation;
+                    ViewModel.RadioContainer.Play(ViewModel.CurrentRadioStation);
+                }
+            }
         }
     }
 }

@@ -30,6 +30,17 @@ namespace RadioOrganizer
             }
         }
 
+        private bool isplaying;
+
+        public bool IsPlaying
+        {
+            get => isplaying;
+            set
+            {
+                isplaying = value;
+            }
+        }
+
         public RadioStationContainer(string Name, string Url)
         {
             this.Name = Name;

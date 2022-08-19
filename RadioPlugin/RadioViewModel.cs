@@ -42,6 +42,18 @@ namespace RadioPlugin
             }
         }
 
+        private RadioStationContainer currentradiostation;
+
+        public RadioStationContainer CurrentRadioStation
+        {
+            get => currentradiostation;
+            set
+            {
+                currentradiostation = value;
+                OnPropertyChanged(nameof(CurrentRadioStation));
+            }
+        }
+
         public RadioViewModel()
         {
             RadioContainer = new RadioContainer();
