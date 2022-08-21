@@ -6,8 +6,7 @@ Requirements:
 2. Ascon Services 1.3.2.6 or higher.
 
 Installation:
-1. Download and install Ascon Services form here: https://update.ascon.ru
-2. Clone or download source code.
-3. Build the project.
-4. Put dll files into the following directory: C:\Program Files (x86)\ASCON\ASCON Services\Plugins\RadioPlugin.
-5. Start Ascon Services.
+1. Download and install Ascon Services from here: https://update.ascon.ru.
+2. Download the latest version of Radio Plugin from here: https://github.com/Romucha/RadioPlugin/releases.
+3. Install Radio Plugin.
+4. Start Ascon Services.
