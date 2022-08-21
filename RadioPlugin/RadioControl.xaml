@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RadioPlugin"
              xmlns:rad_org="clr-namespace:RadioOrganizer;assembly=RadioOrganizer"
+             xmlns:rad_org_res="clr-namespace:RadioOrganizer.Properties;assembly=RadioOrganizer"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="0,5,15,15">
     <UserControl.Resources>
@@ -69,36 +70,19 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <!--<Style.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True"/>
-                            </MultiTrigger.Conditions>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsPlaying, UpdateSourceTrigger=PropertyChanged}" Value="True">
                             <Setter Property="Background" Value="{StaticResource ItemMouseOverBackgroundColor}"/>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
-                                <Condition Property="IsSelected" Value="True"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="Transparent"/>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
-                                <Condition Property="IsSelected" Value="True"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="{StaticResource TextBoxBorderBrushColor}"/>
-                        </MultiTrigger>
-                    </Style.Triggers>-->
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
-                <GridView>
+                <GridView x:Name="grd_vw">
                     <GridViewColumn Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate DataType="{x:Type rad_org:RadioStationContainer}">
-                                <Grid>
+                                <Grid x:Name="grd">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
@@ -107,13 +91,26 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button x:Name="ply_btn" Grid.Row="0" Click="ply_btn_Click" Style="{StaticResource TitleBarButtonStyle}">
-                                        ⏯
+                                    <Button x:Name="ply_btn" Grid.Row="0" Grid.RowSpan="2" Click="ply_btn_Click" Style="{StaticResource FunctionalButtonStyleTransparent}">
+                                        <Image>
+                                            <Image.Style>
+                                                <Style TargetType="{x:Type Image}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsPlaying, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                            <Setter Property="Source" Value="Images/Pause.png"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsPlaying, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                                            <Setter Property="Source" Value="Images/Play.png"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
                                     </Button>
                                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBlockSubHeader}"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBlockSecondary}"/>
                                 </Grid>
-                            </DataTemplate>
+                            </DataTemplate>                            
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product
+		Id="{f73fb704-21d3-46c3-92d7-1241eb9d410a}"
+		Codepage="1251"
+		Name="Сервисы АСКОН. Радио"
+		Language="1049"
+		Version="1.0.2.0"
+		Manufacturer="ООО «АСКОН-Бизнес-решения»"
+		UpgradeCode="{883d71e2-5451-4176-aae5-d27636581e24}">
+		<Package
+		  Id="*"
+		  InstallerVersion="405"
+		  Compressed="yes"
+		  InstallScope="perMachine"
+		  InstallPrivileges="elevated"
+		  SummaryCodepage="1251"
+		  Comments="ASCON Services. Radio Plugin"
+		  Keywords="ASCON"
+		  />
+		<Property Id="SERVICESNOTFOUND">
+			<ComponentSearch Id="Ascon.AU.ControlCenter.exe" Guid="{2C57195C-48B9-4361-AEF7-CF5F1B07462A}" />
+		</Property>
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<Media Id='1' Cabinet='asconradioplugin' EmbedCab='yes' />
+
+		<Feature Id="RadioPlugin" Title="SetupPlugin" Level="1">
+			<ComponentGroupRef Id="RadioComponents" />
+		</Feature>
+
+		<Condition Message="Не найдены «Сервисы АСКОН»."><![CDATA[SERVICESNOTFOUND]]></Condition>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder" SourceName="program files">
+				<Directory Id="ASCON" Name="ASCON">
+					<Directory Id="INSTALLDIR" Name="ASCON Services">
+						<Directory Id="PLUGINS" Name="Plugins">
+							<Directory Id="PLUGINS_RADIOPLUGIN" Name="Radio Plugin" />
+						</Directory>
+					</Directory>
+				</Directory>
+			</Directory>
+			<Directory Id="ProgramMenuFolder" SourceName="Programs"/>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="RadioComponents" Directory="PLUGINS_RADIOPLUGIN">
+			<Component Id="Ascon.AU.PluginConnector.dll" Guid="{731042a2-e4f4-40e3-9f7a-a890a78e8a05}">
+				<File Id="Ascon.AU.PluginConnector.dll" Name="Ascon.AU.PluginConnector.dll" Source="$(var.Source)\Ascon.AU.PluginConnector.dll" KeyPath="yes"/>
+			</Component>
+			<Component Id="AxInterop.WMPLib.dll" Guid="{52556ff8-5fa3-4379-87a8-01ecbbda73b7}">
+				<File Id="AxInterop.WMPLib.dll" Name="AxInterop.WMPLib.dll" Source="$(var.Source)\AxInterop.WMPLib.dll" KeyPath="yes"/>
+			</Component>
+			<Component Id="Microsoft.Xaml.Behaviors.dll" Guid="{9b5654b0-6487-4f21-b93c-01fa6df8c05b}">
+				<File Id="Microsoft.Xaml.Behaviors.dll" Name="Microsoft.Xaml.Behaviors.dll" Source="$(var.Source)\Microsoft.Xaml.Behaviors.dll" KeyPath="yes"/>
+			</Component>
+			<Component Id="Newtonsoft.Json.dll" Guid="{2d54171c-c2cf-482f-9255-a661319f7ab8}">
+				<File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.Source)\Newtonsoft.Json.dll" KeyPath="yes"/>
+			</Component>
+			<Component Id="NLog.dll" Guid="{1f329f3a-a23c-4356-9722-e9e5935fe0b4}">
+				<File Id="NLog.dll" Name="NLog.dll" Source="$(var.Source)\NLog.dll" KeyPath="yes"/>
+			</Component>
+			<Component Id="RadioOrganizer.dll" Guid="{e303ce94-85fe-44a2-9ff9-19db2b725cf1}">
+				<File Id="RadioOrganizer.dll" Name="RadioOrganizer.dll" Source="$(var.Source)\RadioOrganizer.dll" KeyPath="yes"/>
+			</Component>
+			<Component Id="RadioPlugin.dll" Guid="{25a8ca2e-2cff-4e6c-8420-24fc6e6be580}">
+				<File Id="RadioPlugin.dll" Name="RadioPlugin.dll" Source="$(var.Source)\RadioPlugin.dll" KeyPath="yes"/>
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

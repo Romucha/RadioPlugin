@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -8,8 +10,16 @@ using System.Windows.Media.Imaging;
 
 namespace RadioOrganizer
 {
-    public class RadioStationContainer
+    public class RadioStationContainer : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        
+        private void OnPropertyChanged([CallerMemberName]string name ="")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
         private string name;
         public string Name
         {
@@ -17,6 +27,7 @@ namespace RadioOrganizer
             set 
             { 
                 name = value;
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -27,6 +38,7 @@ namespace RadioOrganizer
             set
             {
                 url = value;
+                OnPropertyChanged(nameof(Url));
             }
         }
 
@@ -38,6 +50,7 @@ namespace RadioOrganizer
             set
             {
                 isplaying = value;
+                OnPropertyChanged(nameof(IsPlaying));
             }
         }
 

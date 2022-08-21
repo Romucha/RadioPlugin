@@ -107,7 +107,14 @@ namespace RadioPlugin
             {
                 if (object.ReferenceEquals(bufRadioStation, ViewModel.CurrentRadioStation))
                 {
-                    ViewModel.RadioContainer.Pause(bufRadioStation);
+                    if (bufRadioStation.IsPlaying)
+                    {
+                        ViewModel.RadioContainer.Pause(bufRadioStation);
+                    }
+                    else
+                    {
+                        ViewModel.RadioContainer.Play(bufRadioStation);
+                    }
                 }
                 else
                 {
