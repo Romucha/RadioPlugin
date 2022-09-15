@@ -123,13 +123,12 @@ namespace RadioOrganizer
             }
         }
 
-        public void Stop(RadioStationContainer RSC)
+        public void Stop()
         {
-            if (WMP.playState == WMPPlayState.wmppsPlaying
-                || WMP.playState == WMPPlayState.wmppsPaused)
+            if (WMP.playState != WMPPlayState.wmppsStopped)
             {
                 Task stop = new Task(WMP.controls.stop);
-                RSC.IsPlaying = false;
+                RadioStations.ToList().ForEach(c => c.IsPlaying = false);
                 stop.Start();
             }
 

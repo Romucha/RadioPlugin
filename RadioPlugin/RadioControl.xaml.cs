@@ -32,6 +32,8 @@ namespace RadioPlugin
         public string Command3Description { get; set; }
         public string Command4Description { get; set; }
         public string Command5Description { get; set; }
+        public string Command1Description { get; set; }
+        public string Command2Description { get; set; }
 
         public event EventHandler<ToastNotificationEventArgs> OnShowToastNotification;
 
@@ -57,7 +59,17 @@ namespace RadioPlugin
 
         public void ExpressPanelCommand()
         {
-            
+
+        }
+
+        public void Command1()
+        {
+
+        }
+
+        public void Command2()
+        {
+
         }
 
         public void Command3()
@@ -83,45 +95,20 @@ namespace RadioPlugin
         private void ply_btn_Click(object sender, RoutedEventArgs e)
         {
             /*
-             * possible scenarios:
-             * 1. user presses button for the very fisrt time
-             * it means that current radio station == null
-             * then we set current radio station to current data context
-             * and play it
-             * 2. user presses button after pressing another one
-             * it means that current radio station != null
-             * then we stop current radio station and set it to current data context
-             * and play it
-             * 3. user presses the same button again
-             * it means user is trying to pause player and current radio station and current data context refer to the same object
-             * then we stop it
-             * 
+                Updated algorythm:
+                1. Regardless of the player state we stop it (all stations aren't playing anymore)
+                2. If the station isn't playing we start it
              */
+            //REWORK EVERYTHING
             var bufRadioStation = ((FrameworkElement)sender).DataContext as RadioStationContainer;
-            if (ViewModel.CurrentRadioStation == null)
+            bool isplaying = bufRadioStation.IsPlaying;            
+            if (isplaying)
             {
-                ViewModel.CurrentRadioStation = bufRadioStation;
-                ViewModel.RadioContainer.Play(ViewModel.CurrentRadioStation);
+                ViewModel.RadioContainer.Stop();
             }
-            else if (ViewModel.CurrentRadioStation != null)
+            else
             {
-                if (object.ReferenceEquals(bufRadioStation, ViewModel.CurrentRadioStation))
-                {
-                    if (bufRadioStation.IsPlaying)
-                    {
-                        ViewModel.RadioContainer.Pause(bufRadioStation);
-                    }
-                    else
-                    {
-                        ViewModel.RadioContainer.Play(bufRadioStation);
-                    }
-                }
-                else
-                {
-                    ViewModel.RadioContainer.Stop(ViewModel.CurrentRadioStation);
-                    ViewModel.CurrentRadioStation = bufRadioStation;
-                    ViewModel.RadioContainer.Play(ViewModel.CurrentRadioStation);
-                }
+                ViewModel.RadioContainer.Play(bufRadioStation);
             }
         }
     }

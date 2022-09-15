@@ -32,8 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ascon.AU.PluginConnector">
+    <Reference Include="Ascon.AU.PluginConnector, Version=1.1.1.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\ASCON\ASCON Services\Ascon.AU.PluginConnector.dll</HintPath>
+    </Reference>
+    <Reference Include="Ascon.AU.Styles">
+      <HintPath>C:\Program Files (x86)\ASCON\ASCON Services\Ascon.AU.Styles.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -85,15 +89,15 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RadioOrganizer\RadioOrganizer.csproj">
-      <Project>{57347405-7263-466F-AD54-DEF63CA0BE05}</Project>
-      <Name>RadioOrganizer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Pause.png" />
     <Resource Include="Images\Play.png" />
     <Resource Include="Images\Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RadioOrganizer\RadioOrganizer.csproj">
+      <Project>{57347405-7263-466f-ad54-def63ca0be05}</Project>
+      <Name>RadioOrganizer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
