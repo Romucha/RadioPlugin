@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using WMPLib;
 
 namespace RadioOrganizer
@@ -98,38 +102,83 @@ namespace RadioOrganizer
             }
         }
 
-        public void Play(RadioStationContainer RSC)
+        public async void Play(RadioStationContainer RSC)
         {
             if (RSC != null)
             {
                 if (WMP.playState != WMPPlayState.wmppsPlaying)
                 {
-                    WMP.URL = RSC.Url;
-                    WMP.settings.volume = Volume;
-                    RSC.IsPlaying = true;
-                    Task play = new Task(WMP.controls.play);
-                    play.Start();
+
+                    using (CancellationTokenSource cancelTokenSource = new CancellationTokenSource(5000))
+                    {
+                        CancellationToken token = cancelTokenSource.Token;
+                        await Task.Run(() =>
+                        {
+                            token.Register(() =>
+                            {
+                                if (wmp.playState != WMPPlayState.wmppsPlaying)
+                                {
+                                    RSC.IsPlaying = false;
+                                    WMP.controls.stop();
+                                }
+                                return;
+                            });
+                            try
+                            {
+                                WMP.URL = RSC.Url;
+                                WMP.settings.volume = Volume;
+                                RSC.IsPlaying = true;
+                                WMP.controls.play();
+                                Thread.Sleep(5000);
+                            }
+                            catch
+                            {
+
+                            }
+                        }, token);
+                    }
                 }
             }
         }
 
-        public void Pause(RadioStationContainer RSC)
+        public async void Pause(RadioStationContainer RSC)
         {
             if (WMP.playState != WMPPlayState.wmppsPaused)
             {
-                Task pause = new Task(WMP.controls.pause);
-                RSC.IsPlaying = false;
-                pause.Start();
+                using (CancellationTokenSource cancelTokenSource = new CancellationTokenSource(5000))
+                {
+                    CancellationToken token = cancelTokenSource.Token;
+                    await Task.Run(() =>
+                    {
+                        RSC.IsPlaying = false;
+                        token.Register(() =>
+                        {
+                            RSC.IsPlaying = true;
+                            return;
+                        });
+                        WMP.controls.pause();
+                    }, token);
+                }
             }
         }
 
-        public void Stop()
+        public async void Stop()
         {
             if (WMP.playState != WMPPlayState.wmppsStopped)
             {
-                Task stop = new Task(WMP.controls.stop);
-                RadioStations.ToList().ForEach(c => c.IsPlaying = false);
-                stop.Start();
+                using (CancellationTokenSource cancelTokenSource = new CancellationTokenSource(5000))
+                {
+                    CancellationToken token = cancelTokenSource.Token;
+                    await Task.Run(() =>
+                    {
+                        token.Register(() =>
+                        {
+                            return;
+                        });
+                        RadioStations.ToList().ForEach(c => c.IsPlaying = false);
+                        WMP.controls.stop();
+                    }, token);
+                }
             }
 
         }

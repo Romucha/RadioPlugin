@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>e42ab2ae-36c3-4841-8672-a440345fd390</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>RadioPlugin1.1.0.0</OutputName>
+    <OutputName>RadioPlugin1.1.1.0</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
